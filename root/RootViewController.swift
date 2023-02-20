@@ -47,20 +47,20 @@ private extension RootViewController {
         navigationController.isNavigationBarHidden = true
         let swipeDownConfiguration = SwipeDownConfiguration(
             isSticky: configurationsView.isSticky,
-            shouldFade: configurationsView.shouldFade,
+            shouldViewFade: configurationsView.shouldViewFade,
             animationDuration: configurationsView.animationDuration,
-            minimumVelocityToHide: configurationsView.minimumVelocityToHide,
-            minimumScreenRatioToHide: configurationsView.minimumScreenRatioToHide) { [weak self] state in
+            minimumVelocityToDismiss: configurationsView.minimumVelocityToDismiss,
+            minimumScreenPercentageOffsetToDismiss: configurationsView.minimumScreenPercentageOffsetToDismiss) { [weak self] state in
                 let timeString = DateFormatter.time.string(from: Date())
                 switch state {
                 case .initiated:
                     print("🏁 \(timeString) : SWIPE DOWN INITIATED")
                     self?.removeRulerView()
                 case .completed:
-                    print("✅ \(timeString) : SWIPE DOWN COMPLETED\n")
+                    print("✅ \(timeString) : SWIPE DOWN COMPLETED")
                     self?.dismiss(animated: true)
                 case .cancelled:
-                    print("❌ \(timeString) : SWIPE DOWN CANCELLED\n")
+                    print("❌ \(timeString) : SWIPE DOWN CANCELLED")
                 }
             }
         

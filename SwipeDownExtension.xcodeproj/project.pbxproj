@@ -21,7 +21,7 @@
 		5832C445298A187900F47C4E /* example_screen_ratio.gif in Resources */ = {isa = PBXBuildFile; fileRef = 5832C442298A187900F47C4E /* example_screen_ratio.gif */; };
 		5832C446298A187900F47C4E /* example_screen_ratio_sticky.gif in Resources */ = {isa = PBXBuildFile; fileRef = 5832C443298A187900F47C4E /* example_screen_ratio_sticky.gif */; };
 		5832C44A298A36BC00F47C4E /* example_view_controller_with_scroll_view.gif in Resources */ = {isa = PBXBuildFile; fileRef = 5832C448298A36BC00F47C4E /* example_view_controller_with_scroll_view.gif */; };
-		5832C44B298A36BC00F47C4E /* example_logs.gif in Resources */ = {isa = PBXBuildFile; fileRef = 5832C449298A36BC00F47C4E /* example_logs.gif */; };
+		587CC6FB29A9A39B006BF638 /* example_logs.gif in Resources */ = {isa = PBXBuildFile; fileRef = 587CC6FA29A9A39B006BF638 /* example_logs.gif */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,7 +41,7 @@
 		5832C442298A187900F47C4E /* example_screen_ratio.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = example_screen_ratio.gif; sourceTree = "<group>"; };
 		5832C443298A187900F47C4E /* example_screen_ratio_sticky.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = example_screen_ratio_sticky.gif; sourceTree = "<group>"; };
 		5832C448298A36BC00F47C4E /* example_view_controller_with_scroll_view.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = example_view_controller_with_scroll_view.gif; sourceTree = "<group>"; };
-		5832C449298A36BC00F47C4E /* example_logs.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = example_logs.gif; sourceTree = "<group>"; };
+		587CC6FA29A9A39B006BF638 /* example_logs.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = example_logs.gif; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,7 +104,7 @@
 				5832C441298A187900F47C4E /* example_minimum_velocity.gif */,
 				5832C443298A187900F47C4E /* example_screen_ratio_sticky.gif */,
 				5832C442298A187900F47C4E /* example_screen_ratio.gif */,
-				5832C449298A36BC00F47C4E /* example_logs.gif */,
+				587CC6FA29A9A39B006BF638 /* example_logs.gif */,
 				5832C448298A36BC00F47C4E /* example_view_controller_with_scroll_view.gif */,
 			);
 			path = gifs;
@@ -172,7 +172,7 @@
 				5832C44A298A36BC00F47C4E /* example_view_controller_with_scroll_view.gif in Resources */,
 				5832C445298A187900F47C4E /* example_screen_ratio.gif in Resources */,
 				5832C43F298A014700F47C4E /* README.md in Resources */,
-				5832C44B298A36BC00F47C4E /* example_logs.gif in Resources */,
+				587CC6FB29A9A39B006BF638 /* example_logs.gif in Resources */,
 				5832C444298A187900F47C4E /* example_minimum_velocity.gif in Resources */,
 				5832C41D2987017800F47C4E /* LaunchScreen.storyboard in Resources */,
 				5832C41A2987017800F47C4E /* Assets.xcassets in Resources */,

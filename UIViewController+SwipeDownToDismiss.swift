@@ -14,38 +14,38 @@ struct SwipeDownConfiguration {
         case initiated
         /// view is completely out of bounds
         case completed
-        /// swipe down started but not triggered. view reverted to original transform
+        /// pan gesture stopped, it did not meet the required conditionas. view is reverted to its original transform
         case cancelled
     }
     
     typealias SwipeDownStatusChange = (SwipeDownStatus) -> Void
     
-    /// it true, view's y-axis swipe offset is half the true offset (appears to be stickier to top)
+    /// if true, view's y-axis swipe offset is half the true offset (appears to be stickier to top)
     let isSticky: Bool
     /// if true, the view fades relative to the y-axis offset
-    let shouldFade: Bool
-    /// minimum velocity to trigger swipe down action
-    let minimumVelocityToHide: CGFloat
-    /// minimum ratio of the screen to
-    let minimumScreenRatioToHide: CGFloat
+    let shouldViewFade: Bool
     /// duration of when view transform to original position or if out of bounds (swipe down action triggered)
     let animationDuration: TimeInterval
+    /// minimum velocity required to trigger swipe down action
+    let minimumVelocityToDismiss: CGFloat
+    /// minimum vertical offset, in terms of percent of the screen's height, required to trigger swipe down action. values range: 0.0 - 0.9
+    let minimumScreenPercentageOffsetToDismiss: CGFloat
     /// closure that gets called when there is a `SwipeDownStatus` change
     let statusChange: SwipeDownStatusChange
     
     init(
         isSticky: Bool,
-        shouldFade: Bool,
+        shouldViewFade: Bool,
         animationDuration: TimeInterval = 0.2,
-        minimumVelocityToHide: CGFloat = 1300,
-        minimumScreenRatioToHide: CGFloat = 0.30,
+        minimumVelocityToDismiss: CGFloat = 1300,
+        minimumScreenPercentageOffsetToDismiss: CGFloat = 0.30,
         statusChange: @escaping SwipeDownStatusChange
     ) {
         self.isSticky = isSticky
-        self.shouldFade = shouldFade
+        self.shouldViewFade = shouldViewFade
         self.animationDuration = animationDuration
-        self.minimumVelocityToHide = minimumVelocityToHide
-        self.minimumScreenRatioToHide = minimumScreenRatioToHide
+        self.minimumVelocityToDismiss = minimumVelocityToDismiss
+        self.minimumScreenPercentageOffsetToDismiss = min(max(0, minimumScreenPercentageOffsetToDismiss), 0.9)
         self.statusChange = statusChange
     }
     
@@ -111,17 +111,21 @@ private extension UIViewController {
     }
     
     @objc func onPan(_ panGesture: UIPanGestureRecognizer) {
-        // if no configuration, something is wrong, abort
+        // if no configuration, something is wrong, thus abort
         guard let configuration = swipeDownConfiguration else { return }
-        
+    
         let viewSize = view.frame.size
+    
+        /// closure that  transforms the view, as well if to do a fading effect, if needed
         let moveViewVerticallyTo: (CGFloat) -> Void = { [weak self] y in
             let transform = CGAffineTransform(translationX: 0, y: y)
             self?.view.transform = transform
-            if configuration.shouldFade {
+            if configuration.shouldViewFade {
                 self?.view.alpha = (viewSize.height - y) / viewSize.height
             }
         }
+        
+        /// closure to handle moving view to its original position, along with notifying status change with `.cancelled`
         let cancelAndReset: () -> Void = {
             configuration.statusChange(.cancelled)
             UIView.animate(withDuration: configuration.animationDuration, animations: {
@@ -130,18 +134,20 @@ private extension UIViewController {
         }
         
         switch panGesture.state {
-        case .began, .changed: // move view to follow the finger
+        case .began, .changed: // move view to follow the pan gesture
             let translation = panGesture.translation(in: view)
+            
+            // get the adjusted y-axis translation, in case configuration has isSticky true
             let adjustedTranslationY = configuration.adjustVerticalTranslation(translation.y)
             moveViewVerticallyTo(adjustedTranslationY)
             
         case .ended: // decide if far enought to close or fully appear back up
             let translation = panGesture.translation(in: view)
             let velocity = panGesture.velocity(in: view)
-            let isClosing = (translation.y > viewSize.height * configuration.minimumScreenRatioToHide) ||
-            (velocity.y > configuration.minimumVelocityToHide)
+            let dismissConditionsMet = (translation.y > viewSize.height * configuration.minimumScreenPercentageOffsetToDismiss) ||
+            (velocity.y > configuration.minimumVelocityToDismiss)
             
-            if isClosing { // move the view below completely and trigger completion handler
+            if dismissConditionsMet {
                 // notify dismiss is initiated
                 configuration.statusChange(.initiated)
                 
@@ -149,7 +155,7 @@ private extension UIViewController {
                     moveViewVerticallyTo(viewSize.height)
                 }, completion: { isCompleted in
                     if isCompleted {
-                        // notify dismiss is complete
+                        // notify view is fully dismissed
                         configuration.statusChange(.completed)
                     }
                 })
@@ -157,7 +163,7 @@ private extension UIViewController {
                 cancelAndReset()
             }
             
-        default: // undetermined, make it fully appear
+        default: // undetermined, reposition view back to top
             cancelAndReset()
         }
     }

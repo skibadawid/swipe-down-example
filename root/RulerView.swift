@@ -23,7 +23,7 @@ struct RulerView: View {
                     }.frame(maxHeight: .infinity)
                 }
             }.frame(maxHeight: .infinity).ignoresSafeArea()
-            Text("SCREEN RATIO RULLER")
+            Text("SCREEN % RULLER")
                 .font(.title).bold().foregroundColor(Self.targetColor)
                 .background(Color(.systemBackground)).rotationEffect(Angle(degrees: 270), anchor: .leading)
         }

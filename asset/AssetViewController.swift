@@ -11,7 +11,7 @@ class AssetViewController: UIViewController {
     private let imageView = UIImageView(frame: .zero)
     
     static var random: AssetViewController {
-        AssetViewController(asset: Asset.random)
+        AssetViewController(asset: .random)
     }
     
     init(asset: Asset) {
